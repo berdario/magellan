@@ -1,0 +1,4 @@
+modify netsource to start only when handlers is not empty, and stop when empty
+modify netsource to avoid looping (and create another library to use as looping reference)
+
+
