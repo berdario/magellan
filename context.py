@@ -26,12 +26,11 @@ class State(dict):
 	def checkmax(self):
 		"Select the more likely context based on the rules, and executes its input and output actions if needed"
 		max_context = max(self.values(), key= lambda m:m.score)
-		if True:#max_context is not self.current_context:
-			if max_context.score < self.THRESHOLD: 
-				if self.current_context is self['Default']:
-					return #if the max_context changed but both the old and the new one where under the threshold it's useless to do any action
-				max_context = self['Default']
-
+		
+		if max_context.score < self.THRESHOLD:
+			max_context = self['Default']
+			
+		if max_context is not self.current_context:
 			for action in self.current_context.out_actions:
 				action()
 			self.current_context = max_context
