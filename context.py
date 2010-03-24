@@ -87,6 +87,7 @@ if __name__ == '__main__':
 	state = State()
 	state['Casa'].in_actions.append(in_casa)
 	state.add_rule(network.connect_ssid,'wlan-ap','Casa',0.8)
+	# state.add_rule(SSIDRule('wlan-ap'), 'Casa',, 0.8)
 	state['Casa'].out_actions.append(out_casa)
 	state['Default'].in_actions.append(default)
 	while True:
