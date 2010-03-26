@@ -1,10 +1,12 @@
-Default:
 Casa:
-  rules:
-    - source: connect_ssid
-      value: Alice-36322894
-      confidence: 0.8
   in_actions:
-    - print_in_home
+  - print_in_home
   out_actions:
-    - print_out_home
+  - print_out_home
+  rules:
+  - confidence: 0.80000000000000004
+    source: connect_ssid
+    value: wlan-ap
+Default:
+  in_actions: []
+  out_actions: []
