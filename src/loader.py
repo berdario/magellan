@@ -1,8 +1,8 @@
 from state import State
 import actions
 from time import sleep
-from netsource import Network
-network = Network()
+from netsource import NetworkSource
+network = NetworkSource()
 import yaml
 
 configfile = 'config.yaml'
