@@ -1,8 +1,8 @@
 from state import State
 import actions
 from time import sleep
-from netsource import Network
-network = Network()
+from netsource import NetworkSource
+network = NetworkSource()
 import yaml
 
 configfile = 'config.yaml'
@@ -23,18 +23,18 @@ def loadconfig():
             pass
         except KeyError:
             pass
-            
+
         try:
             state[k].in_actions.extend(map(lambda string:getattr(actions, string), data[k]['in_actions']))
         except TypeError:
             pass
-            
+
         try:
             state[k].out_actions.extend(map(lambda string:getattr(actions, string), data[k]['out_actions']))
         except TypeError:
             pass
     return state
-        
+
 def saveconfig(state):
     data = dict()
     for key in state:
@@ -45,6 +45,6 @@ def saveconfig(state):
             data[key]['rules'].append({'confidence':rule.func.confidence, 'source':source.func_name, 'value':rule.args[1]})
         data[key]['in_actions'] = map(lambda action:action.func_name, state[key].in_actions)
         data[key]['out_actions'] = map(lambda action:action.func_name, state[key].out_actions)
-        
+
     yaml.safe_dump(data, stream=file(configfile, 'w'), default_flow_style=False)
 

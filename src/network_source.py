@@ -6,7 +6,7 @@ import gobject
 from dbus.mainloop.glib import DBusGMainLoop
 
 
-class Network():
+class NetworkSource():
     '''This class spawn a thread and fetch changes to the network using the NetworkManager DBUS API, calling the handlers provided when needed'''
 
     def __init__(self):

@@ -2,15 +2,15 @@ class EventSource():
     def __init__(self):
         self._rules = []
 
-    def attach(self, observer):
+    def attach(self, rule):
         if not self._rules:
             start()
-        if not observer in self._rules:
-            self._rules.append(observer)
+        if not rule in self._rules:
+            self._rules.append(rule)
 
-    def detach(self, observer):
+    def detach(self, rule):
         try:
-            self._rules.remove(observer)
+            self._rules.remove(rule)
             if not self._rules:
                 stop()
         except ValueError:
@@ -24,5 +24,6 @@ class EventSource():
     
 
     def notify(self, data):
-        for observer in self._rules:
-            observer.update(data)
+        for rule in self._rules:
+            rule.update(data)
+
