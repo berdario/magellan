@@ -15,7 +15,7 @@ class EventSource():
     def notify(self, modifier=None):
         for observer in self._rules:
             if modifier != observer:
-                observer.update(self)
+                observer.update(self.data())
                 
     def data(self):
         raise NotImplementedError
