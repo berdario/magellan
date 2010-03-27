@@ -1,31 +1,44 @@
 from time import sleep
 from threading import Thread
 import sys
-
-sys.path.append("./cnetworkmanager.librarize")
-from networkmanager.networkmanager import NetworkManager
+import dbus
 
 class Network():
 	"This class spawn a thread and fetch changes to the network using the NetworkManager DBUS API, calling the handlers provided when needed"
 
 	def __init__(self):
-		self.nm = NetworkManager()
+		
+
+		self.bus=dbus.SystemBus()
+
+		nm = dbus.Interface(self.bus.get_object("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager"), "org.freedesktop.NetworkManager")
+		devices= nm.GetDevices()
+		self._wlan = []
+		for d in devices:
+			device=self.bus.get_object('org.freedesktop.NetworkManager',d)
+			device_properties=dbus.Interface(device,"org.freedesktop.DBus.Properties")
+			if device_properties.Get('org.freedesktop.DBus.Properties',"DeviceType") == 2:
+				self._wlan.append(device)
+
 		self.handlers = []
 		self.p=Thread(target=self.run)
 		self.p.daemon = True #simple solution, but it's better to be careful: http://joeshaw.org/2009/02/24/605
 		self.p.start()
 		
-	def get_macaddresses(self):
-		return self._getProperty('HwAddress')
-
 	def get_ssids(self):
-		return self._getProperty('Ssid')
-
-	def _getProperty(self, property):
-		devices = self.nm.GetDevices()
-		result = []
-		for dev in filter(lambda d: d._settings_type() == "802-11-wireless", devices):
-			result.extend(str(ap[property]) for ap in dev.GetAccessPoints())
+		access_points=[]
+		result=[]
+		
+		for w in self._wlan:
+			wireless=dbus.Interface(w,'org.freedesktop.NetworkManager.Device.Wireless')
+			access_points.extend(wireless.GetAccessPoints())
+			
+		for ap in access_points:
+			ap_properties=dbus.Interface(self.bus.get_object('org.freedesktop.NetworkManager',ap),"org.freedesktop.DBus.Properties")
+			ssid=ap_properties.Get('org.freedesktop.DBus.Properties',"Ssid")
+			#for ssid in ssids:
+			result.append(''.join((str(b) for b in ssid)))
+				
 		return result
 
 	def connect_ssid(self, handler):
