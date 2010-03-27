@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+from context import Context
+from functools import partial
+from rule import Rule
+
 class State(dict):
     '''Main Magellan class, holding the status of the active contexts and rules'''
     
@@ -15,7 +20,7 @@ class State(dict):
         try:
             return dict.__getitem__(self, key)
         except KeyError: #used to avoid explicitly creating a new Context object each time
-            new_context = State.Context(self)
+            new_context = Context(self)
             self[key] = new_context
             return new_context
     
@@ -35,6 +40,6 @@ class State(dict):
     
     def add_rule(self, source, value, context, confidence):
         '''Add a rule to its context's rules and connects it to the event source'''
-        rule = partial(State.Rule(confidence), self[context], value)
+        rule = partial(Rule(confidence), self[context], value)
         self[context].rules.append((source, rule))
         source(rule)
