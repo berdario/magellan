@@ -16,6 +16,6 @@ class EventSource():
         for rule in self._rules:
             if modifier != rule:
                 rule.update(self.data())
-                
+
     def data(self):
         raise NotImplementedError
