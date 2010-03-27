@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+
+import loader
+from time import sleep
+
 if __name__ == '__main__':
     #network=Network()
     #state = State()

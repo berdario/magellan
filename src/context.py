@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-from netsource import Network
-from functools import partial
-from time import sleep
-import loader
 
 class Context(object):
     '''Context class: holds its current score, and the rules and actions related to this context'''

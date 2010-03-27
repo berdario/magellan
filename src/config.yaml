@@ -10,3 +10,14 @@ Casa:
 Default:
   in_actions: []
   out_actions: []
+Uni:
+  in_actions:
+  - print_out_home
+  out_actions: []
+  rules:
+  - confidence: 0.90000000000000002
+    source: connect_ssid
+    value: bglug0
+  - confidence: 0.90000000000000002
+    source: connect_ssid
+    value: unibgfreenet

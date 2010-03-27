@@ -1,4 +1,4 @@
-from context import State
+from state import State
 import actions
 from time import sleep
 from netsource import Network
