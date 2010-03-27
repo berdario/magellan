@@ -1,5 +1,5 @@
 class Rule(object):
-    "Rule class: keeps trace of its confidence value and the current state (matched or not)\nif called checks if the state changed and, if so, prompts the context to update its score"
+    '''Rule class: keeps trace of its confidence value and the current state (matched or not)\nif called checks if the state changed and, if so, prompts the context to update its score'''
     def __init__(self,confidence):
         self.match = False
         self.confidence = confidence

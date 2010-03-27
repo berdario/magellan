@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 class State(dict):
-    "Main Magellan class, holding the status of the active contexts and rules"
+    '''Main Magellan class, holding the status of the active contexts and rules'''
     
     def __new__(cls, *p, **k):
         if not '_singleton' in cls.__dict__:
@@ -20,7 +20,7 @@ class State(dict):
             return new_context
     
     def checkmax(self):
-        "Select the more likely context based on the rules, and executes its input and output actions if needed"
+        '''Select the more likely context based on the rules, and executes its input and output actions if needed'''
         max_context = max(self.values(), key=lambda m:m.score)
 
         if max_context.score < self.THRESHOLD:
@@ -34,7 +34,7 @@ class State(dict):
                 action()
     
     def add_rule(self, source, value, context, confidence):
-        "Add a rule to its context's rules and connects it to the event source"
+        '''Add a rule to its context's rules and connects it to the event source'''
         rule = partial(State.Rule(confidence), self[context], value)
         self[context].rules.append((source, rule))
         source(rule)

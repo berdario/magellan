@@ -4,7 +4,7 @@ import sys
 import dbus
 
 class Network():
-    "This class spawn a thread and fetch changes to the network using the NetworkManager DBUS API, calling the handlers provided when needed"
+    '''This class spawn a thread and fetch changes to the network using the NetworkManager DBUS API, calling the handlers provided when needed'''
 
     def __init__(self):
         
@@ -42,7 +42,7 @@ class Network():
         return result
 
     def connect_ssid(self, handler):
-        "Adds the handler to the functions to be called when an event happens or a change is detected"
+        '''Adds the handler to the functions to be called when an event happens or a change is detected'''
         self.handlers.append(handler)
 
     def run(self):
