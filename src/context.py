@@ -10,5 +10,9 @@ class Context(object):
         self._state = state
     def update_score(self):
         '''Update this context score based on individual rules confidences:\nscore= 1-((1-val1)*(1-val2)*(1-val3)...)'''
-        self.score = 1 - reduce(float.__mul__, (1 - rule.func.confidence for source, rule in self.rules if rule.func.match), 1.0)
+        inv_score = 1
+        for rule in self.rules:
+            if rule.match:
+                inv_score *= (1 - rule.confidence)
+        self.score = 1 - inv_score
         self._state.checkmax()
