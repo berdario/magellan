@@ -2,13 +2,17 @@ from time import sleep
 from threading import Thread
 import sys
 import dbus
+import gobject
+from dbus.mainloop.glib import DBusGMainLoop
+
 
 class Network():
     '''This class spawn a thread and fetch changes to the network using the NetworkManager DBUS API, calling the handlers provided when needed'''
 
     def __init__(self):
-        
+        super(Network,self).__init__()
 
+		DBusGMainLoop(set_as_default=True)
         self.bus=dbus.SystemBus()
 
         nm = dbus.Interface(self.bus.get_object("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager"), "org.freedesktop.NetworkManager")
@@ -24,6 +28,26 @@ class Network():
         self.p=Thread(target=self.run)
         self.p.daemon = True #simple solution, but it's better to be careful: http://joeshaw.org/2009/02/24/605
         self.p.start()
+        
+    def start(self):
+    	wireless_devices = []
+    	for w in self._wlan:
+    		wireless_devices.append(dbus.Interface(w,'org.freedesktop.NetworkManager.Device.Wireless'))
+    	
+    	for wd in wireless_devices:
+    		wd.connect_to_signal("AccessPointAddded",self.handle)
+    		wd.connect_to_signal("AccessPointRemoved",self.handle)
+    	
+    	mainloop = gobject.MainLoop()
+		mainloop.run()
+    		
+    def stop(self):
+    	pass
+    		
+    def handle(self,device):
+    	#TODO: sistamare, mettere in cache i risultati...
+    	self.notify(self.get_ssids())
+    		
         
     def get_ssids(self):
         access_points=[]
